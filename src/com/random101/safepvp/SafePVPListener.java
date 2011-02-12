@@ -22,7 +22,6 @@ public class SafePVPListener extends PlayerListener {
 	ArrayList<String> noPvp = new ArrayList<String>();
 	ArrayList<String> noMsg = new ArrayList<String>();
 	ArrayList<String> yesMsg = new ArrayList<String>();
-	//	ArrayList<String> Dm = new ArrayList<String>();
 	ArrayList<String> noServer = new ArrayList<String>();
 	ArrayList<String> sparList = new ArrayList<String>();
 	ArrayList<String> iSparList = new ArrayList<String>();
@@ -108,7 +107,6 @@ public class SafePVPListener extends PlayerListener {
 			 * Store the config file
 			 */
 			prop.store(new FileOutputStream("SafePVP.properties"), null);
-			//		iProp.store(new FileOutputStream("2.properties"), null);
 		} catch (IOException ioe) {
 		} finally {
 			prop = null;
@@ -182,7 +180,7 @@ public class SafePVPListener extends PlayerListener {
 		String[] split = event.getMessage().split(" ");
 		Player player = event.getPlayer();
 		if (split[0].equals("/pvp")) {
-			if (canUseCommand("/pvp")) { //@@@@@
+			if (canUseCommand("/pvp")) {
 				if (split.length == 1) { player.sendMessage(prefix + "Type /pvp help for more info."); } else {
 					if (split[1].equals("help") && split.length == 2) {
 						player.sendMessage(prefix + "Commands for SafePVP are as follow:");
@@ -473,35 +471,6 @@ public class SafePVPListener extends PlayerListener {
 				}
 			}
 		}
-		/*
-		if (split[0].equals("/pvps")) {
-			if (canUseCommand("/pvpa")) {
-				if (split[1].equals("dmoff")) {
-					if (Dm.contains("on")) {
-						Dm.remove("on");
-						Dm.add("off");
-						player.sendMessage(prefixA + "Death messages have been turned off.");
-					} else if (Dm.contains("off")){
-						player.sendMessage(prefixA + "Death messages are already off.");
-					} else {
-						Dm.add("off");
-						player.sendMessage(prefixA + "Death messages have been turned off.");
-					}
-				} else if (split[1].equals("dmon")) {
-					if (Dm.contains("off")) {
-						Dm.remove("off");
-						Dm.add("on");
-						player.sendMessage(prefixA + "Death messages have been turned on.");
-					} else if (Dm.contains("on")){
-						player.sendMessage(prefixA + "Death messages are already on.");
-					} else {
-						Dm.add("on");
-						player.sendMessage(prefixA + "Death messages have been turned on.");
-					}
-				}
-			}
-		}
-		 */
 		if (split[0].equals("/pvpa")) {
 			if (canUseCommand("/pvpa")) {
 				Player[] players = plugin.getServer().getOnlinePlayers();
