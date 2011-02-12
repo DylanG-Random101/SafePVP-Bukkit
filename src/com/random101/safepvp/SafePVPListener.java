@@ -29,36 +29,34 @@ public class SafePVPListener extends PlayerListener {
 	String creeperMessage;
 	String tntMessage;
 	String waterMessage;
+	String teleportLocation; 
+	String xGroup;
+	String iXGroup;
+	String currency;
+	String iteleportLocation;
 	boolean waiting;
 	boolean on;
-	Boolean defaultPvpOff;
-	Boolean defaultMessageOff;
+	boolean defaultPvpOff;
+	boolean defaultMessageOff;
 	boolean defaultDMOff;
 	boolean inProgress;
 	boolean valid;
-	int defaultToggleDelay;
-	int defaultSparTime;
 	boolean accepted;
-	String teleportLocation; 
-	String xGroup;
 	boolean finished;
-	Player starter;
 	boolean iWaiting;
 	boolean iOn;
 	boolean iInProgress;
 	boolean iValid;
-	int defaultISparTime;
 	boolean iAccepted;
-	String iteleportLocation;
 	boolean found;
-	String iXGroup;
 	boolean iFinished;
-	Player iStarter;
 	int iWin;
-	String currency;
-	Properties prop = new Properties(); 
-
-	{
+	int defaultISparTime;
+	int defaultToggleDelay;
+	int defaultSparTime;
+	Player iStarter;
+	Player starter;
+	Properties prop = new Properties(); {
 		try {
 			/*
 			 * Set default config values
@@ -340,7 +338,7 @@ public class SafePVPListener extends PlayerListener {
 								if (iWaiting) {
 									if (iSparList.contains(player.getName().toLowerCase())) {
 										if (split[3].equalsIgnoreCase(iStarter.getName())) {
-											if (iValid) { // 284
+											if (iValid) {
 												player.sendMessage(duel + "You have accepted " + iStarter.getName() + "'s iSpar!");
 												iStarter.sendMessage(duel + player.getName() + " has accepted your iSpar!");
 												messageAll(duel + "An iSpar has been started between " + iStarter.getName() + " and " + player.getName() + "!");
