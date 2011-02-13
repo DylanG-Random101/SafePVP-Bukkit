@@ -24,37 +24,43 @@ public class SafePVPListener1 extends PlayerListener {
 	ArrayList<String> noServer = new ArrayList<String>();
 	ArrayList<String> sparList = new ArrayList<String>();
 	ArrayList<String> iSparList = new ArrayList<String>();
+	String prefix = ChatColor.GREEN + "[SafePVP] " + ChatColor.WHITE;
+	String prefixA = prefix + ChatColor.YELLOW + "[ADMIN] " + ChatColor.WHITE; 
+	String spar = prefix + ChatColor.GOLD + "[SPAR] " + ChatColor.WHITE;
+	String duel = prefix + ChatColor.GRAY + "[iSPAR] " + ChatColor.WHITE;
+	String prefixS = prefix + ChatColor.DARK_BLUE + "[SERVER] " + ChatColor.WHITE;
+	String teleportLocation; 
+	String xGroup;
 	String fallMessage;
 	String creeperMessage;
 	String tntMessage;
 	String waterMessage;
+	String iXGroup;
+	String iteleportLocation;
+	String currency;
 	boolean waiting;
+	boolean inGroup;
 	boolean on;
-	Boolean defaultPvpOff;
-	Boolean defaultMessageOff;
+	boolean defaultPvpOff;
+	boolean defaultMessageOff;
 	boolean defaultDMOff;
 	boolean inProgress;
 	boolean valid;
-	int defaultToggleDelay;
-	int defaultSparTime;
 	boolean accepted;
-	String teleportLocation; 
-	String xGroup;
 	boolean finished;
-	Player starter;
 	boolean iWaiting;
 	boolean iOn;
 	boolean iInProgress;
 	boolean iValid;
-	int defaultISparTime;
 	boolean iAccepted;
-	String iteleportLocation;
 	boolean found;
-	String iXGroup;
 	boolean iFinished;
+	Player starter;
 	Player iStarter;
 	int iWin;
-	String currency;
+	int defaultToggleDelay;
+	int defaultSparTime;
+	int defaultISparTime;
 	Properties prop = new Properties(); 
 
 	{
@@ -111,13 +117,6 @@ public class SafePVPListener1 extends PlayerListener {
 			prop = null;
 		}
 	}
-
-	boolean inGroup;
-	String prefix = ChatColor.GREEN + "[SafePVP] " + ChatColor.WHITE;
-	String prefixA = prefix + ChatColor.YELLOW + "[ADMIN] " + ChatColor.WHITE; 
-	String spar = prefix + ChatColor.GOLD + "[SPAR] " + ChatColor.WHITE;
-	String duel = prefix + ChatColor.GRAY + "[iSPAR] " + ChatColor.WHITE;
-	String prefixS = prefix + ChatColor.DARK_BLUE + "[SERVER] " + ChatColor.WHITE;
 
 	public SafePVPListener1(SafePVP plugin) {
 		this.plugin = plugin;
@@ -184,7 +183,7 @@ public class SafePVPListener1 extends PlayerListener {
 		if (commandLabel.equals("pvp")) {
 			if (canUseCommand("/pvp")) {
 				if (split.length == 1) { return false; } else {
-					if (split[1].equals("help") && split.length == 2) {
+					if (split[0].equals("help") && split.length == 2) {
 						player.sendMessage(prefix + "Commands for SafePVP are as follow:");
 						player.sendMessage(prefix + "/pvp [on|off|status] - Sets your status or shows it.");
 						player.sendMessage(prefix + "/pvp [mon|moff|mstatus] - Sets onDamage message spam on/off, or shows status");
@@ -195,15 +194,15 @@ public class SafePVPListener1 extends PlayerListener {
 						player.sendMessage(prefix + "the player. Leaving the last argument blank will show PVP status.");
 						player.sendMessage(prefix + "Type /pvp help 2 for more information.");		
 					}
-					if (split[1].equals("help") && split.length == 3) { 
-						//							if (split[2] != null && split[2].equals("2") && player.canUseCommand("/pvpa")) {
-						if (split[2] != null && split[2].equals("2")) {
+					if (split[0].equals("help") && split.length == 3) { 
+						//							if (split[1] != null && split[1].equals("2") && player.canUseCommand("/pvpa")) {
+						if (split[0] != null && split[0].equals("2")) {
 
 							player.sendMessage(prefix + "/pvps [dmon|dmoff] - Turns death messages on/off for the server.");
 						}
 					}
 
-					if (split[1].equals("on")) {
+					if (split[0].equals("on")) {
 						if (noServer.contains(player.getName())) { player.sendMessage(prefix + "Your toggleable PVP status has been revoked by the server"); } else {
 							if (noPvp.contains(player.getName())) {
 								noPvp.remove(player.getName());
@@ -240,7 +239,7 @@ public class SafePVPListener1 extends PlayerListener {
 							}
 						}
 					}
-					if (split[1].equals("off")) {
+					if (split[0].equals("off")) {
 						if (noServer.contains(player.getName())) { player.sendMessage(prefix + "You can't toggle your PVP status!"); } else {
 							if (on) { player.sendMessage(prefix + "You are currently on the on/off cooldown."); } else {
 								if (yesPvp.contains(player.getName())) {
@@ -256,7 +255,7 @@ public class SafePVPListener1 extends PlayerListener {
 							}
 						}
 					}
-					if (split[1].equals("status")) {
+					if (split[0].equals("status")) {
 						if (yesPvp.contains(player.getName())) {
 							player.sendMessage(prefix + "You are on the PVP list!");
 						} else if (noPvp.contains(player.getName())) {
@@ -266,11 +265,11 @@ public class SafePVPListener1 extends PlayerListener {
 						}
 
 					}
-					if (split[1].equals("list")) {
+					if (split[0].equals("list")) {
 						player.sendMessage(prefix + "People on the no PVP list: " + noPvp.toString());
 						player.sendMessage(prefix + "People on the PVP list: " + yesPvp.toString());
 					}
-					if (split[1].equals("moff")) {
+					if (split[0].equals("moff")) {
 						if (yesMsg.contains(player.getName())) {
 							yesMsg.remove(player.getName());
 							noMsg.add(player.getName());
@@ -282,7 +281,7 @@ public class SafePVPListener1 extends PlayerListener {
 							player.sendMessage(prefix + "You have been added to the no messaging list.");
 						}
 					}
-					if (split[1].equals("mon")) {
+					if (split[0].equals("mon")) {
 						if (noMsg.contains(player.getName())) {
 							noMsg.remove(player.getName());
 							yesMsg.add(player.getName());
@@ -294,7 +293,7 @@ public class SafePVPListener1 extends PlayerListener {
 							player.sendMessage(prefix + "You have been added to the messaging list.");
 						}
 					}
-					if (split[1].equals("mstatus")) {
+					if (split[0].equals("mstatus")) {
 						if (yesMsg.contains(player.getName())) {
 							player.sendMessage(prefix + "You are on the messaging list!");
 						} else if (noMsg.contains(player.getName())) {
@@ -303,12 +302,12 @@ public class SafePVPListener1 extends PlayerListener {
 							player.sendMessage(prefix + "Error when retrieving status. Type /pvp [mon|moff]");	
 						}
 					}
-					if (split[1].equalsIgnoreCase("iSpar")) {
+					if (split[0].equalsIgnoreCase("iSpar")) {
 						if (split.length == 4) {
 							Player[] players = plugin.getServer().getOnlinePlayers();
-							Player iTarget = plugin.getServer().getPlayer(split[3]);
+							Player iTarget = plugin.getServer().getPlayer(split[2]);
 
-							if (split[2].equals("start")) {
+							if (split[1].equals("start")) {
 								if (iInProgress) {
 									player.sendMessage(duel + "There is already an iSpar in progress!");
 								} else {
@@ -338,10 +337,10 @@ public class SafePVPListener1 extends PlayerListener {
 									}
 								}
 							}
-							if (split[2].equals("accept")) {
+							if (split[1].equals("accept")) {
 								if (iWaiting) {
 									if (iSparList.contains(player.getName().toLowerCase())) {
-										if (split[3].equalsIgnoreCase(iStarter.getName())) {
+										if (split[2].equalsIgnoreCase(iStarter.getName())) {
 											if (iValid) { // 284
 												player.sendMessage(duel + "You have accepted " + iStarter.getName() + "'s iSpar!");
 												iStarter.sendMessage(duel + player.getName() + " has accepted your iSpar!");
@@ -375,14 +374,14 @@ public class SafePVPListener1 extends PlayerListener {
 							}
 						}
 					}
-					if (split[1].equals("spar")) {
+					if (split[0].equals("spar")) {
 						if (split.length == 4) {
 							Player[] players = plugin.getServer().getOnlinePlayers();
-							Player target = plugin.getServer().getPlayer(split[3]);
+							Player target = plugin.getServer().getPlayer(split[2]);
 							//		int balance = Hooked.getInt("iBalance", new Object[] { "balance", player.getName() });
 							//		int newBalance = (balance+iWin);
 							//		Hooked.silent("iBalance", new Object[] { "set", player.getName(), newBalance }); 
-							if (split[2].equals("start")) {
+							if (split[1].equals("start")) {
 								if (inProgress) {
 									player.sendMessage(spar + "There is already a duel in progress!");
 								} else {
@@ -413,10 +412,10 @@ public class SafePVPListener1 extends PlayerListener {
 									}
 								}
 							}
-							if (split[2].equals("accept")) {
+							if (split[1].equals("accept")) {
 								if (waiting) {
 									if (sparList.contains(player.getName().toLowerCase())) {
-										if (split[3].equalsIgnoreCase(starter.getName())) {
+										if (split[2].equalsIgnoreCase(starter.getName())) {
 											if (valid) {
 												player.sendMessage(spar + "You have accepted " + starter.getName() + "'s spar!");
 												starter.sendMessage(spar + player.getName() + " has accepted your spar!");
@@ -450,7 +449,7 @@ public class SafePVPListener1 extends PlayerListener {
 							}
 						}
 					}
-					if (split[1].equalsIgnoreCase("forfeit")) {
+					if (split[0].equalsIgnoreCase("forfeit")) {
 						if (inProgress && accepted && valid && waiting) {
 							inProgress = false;
 							accepted = false;
@@ -460,7 +459,7 @@ public class SafePVPListener1 extends PlayerListener {
 							messageAll(prefixS + "The current spar was ended by the server.");
 						}
 					}
-					if (split[1].equalsIgnoreCase("iforfeit")) {
+					if (split[0].equalsIgnoreCase("iforfeit")) {
 						if (iInProgress && iAccepted && iValid && iWaiting) {
 							iInProgress = false;
 							iAccepted = false;
@@ -480,7 +479,7 @@ public class SafePVPListener1 extends PlayerListener {
 					player.sendMessage(prefixA + "Invalid syntax. Correct is /pvpa [player] [on|off|status]");
 					return false;
 				} else {
-					Player target = plugin.getServer().getPlayer(split[1]);
+					Player target = plugin.getServer().getPlayer(split[0]);
 					if (split.length < 3 && target != null ) {
 						if (yesPvp.contains(target.getName())) {
 							player.sendMessage(prefixA + target.getName() + " is on the PVP list. ");
@@ -491,7 +490,7 @@ public class SafePVPListener1 extends PlayerListener {
 						}
 					}
 					if (arraySearch(players, target)) {
-						if (split[2].equals("on")) {
+						if (split[1].equals("on")) {
 							if (noPvp.contains(target.getName())) {
 								noPvp.remove(target.getName());
 								yesPvp.add(target.getName());
@@ -505,7 +504,7 @@ public class SafePVPListener1 extends PlayerListener {
 								player.sendMessage(prefixA + target.getName() + " has been added to the PVP list.");
 							}
 						} 
-						if (split[2].equals("off")) {
+						if (split[1].equals("off")) {
 							if (yesPvp.contains(target.getName())) {
 								yesPvp.remove(target.getName());
 								noPvp.add(target.getName());
@@ -519,7 +518,7 @@ public class SafePVPListener1 extends PlayerListener {
 								player.sendMessage(prefixA + target.getName() + " has been added to the no PVP list.");
 							}	
 						}
-						if (split[2].equals("status")) {
+						if (split[1].equals("status")) {
 							if (yesPvp.contains(target.getName())) {
 								player.sendMessage(prefixA + target.getName() + " is on the PVP list.");
 							} else if (noPvp.contains(target.getName())) {
@@ -528,7 +527,7 @@ public class SafePVPListener1 extends PlayerListener {
 								player.sendMessage(prefixA + "Error when retrieving " + target.getName() + "'s status.");	
 							}
 						}
-						if (split[2].equals("mstatus")) {
+						if (split[1].equals("mstatus")) {
 							if (yesMsg.contains(target.getName())) {
 								player.sendMessage(prefixA + target.getName() + " is on the messaging list.");
 							} else if (noMsg.contains(target.getName())) {
