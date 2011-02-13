@@ -15,7 +15,7 @@ public class SafePVP extends JavaPlugin {
 	private final SafePVPListener1 entityListener = new SafePVPListener1(this);
 	
 	String pluginName = "SafePVP";
-	String version = "1.7.1";
+	String version = "1.7";
 
 	public SafePVP(PluginLoader pluginLoader, Server instance,
 			PluginDescriptionFile desc, File folder, File plugin,
@@ -27,13 +27,13 @@ public class SafePVP extends JavaPlugin {
 
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!" );
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " has been disabled!" );
 	}
 
 	public void onEnable() {
 		registerEvents();
 		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " has been enabled!" );
 	}
 
 	private void registerEvents() {
