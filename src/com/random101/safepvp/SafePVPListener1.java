@@ -180,6 +180,7 @@ public class SafePVPListener1 extends PlayerListener {
 		if(sender instanceof Player) {
 			player = (Player) sender;
 		}
+
 		if (commandLabel.equals("pvp")) {
 			if (canUseCommand("/pvp")) {
 				if (split.length == 1) { return false; } else {
@@ -191,17 +192,8 @@ public class SafePVPListener1 extends PlayerListener {
 						//						if (player.canUseCommand("/pvpa")) {
 						player.sendMessage(prefix + "/pvpa [player] [on|off|status|mstatus] - Sets the player's ");
 						player.sendMessage(prefix + "status or shows it to you. mstatus shows the messaging status of");
-						player.sendMessage(prefix + "the player. Leaving the last argument blank will show PVP status.");
-						player.sendMessage(prefix + "Type /pvp help 2 for more information.");		
+						player.sendMessage(prefix + "the player. Leaving the last argument blank will show PVP status.");	
 					}
-					if (split[0].equals("help") && split.length == 3) { 
-						//							if (split[1] != null && split[1].equals("2") && player.canUseCommand("/pvpa")) {
-						if (split[0] != null && split[0].equals("2")) {
-
-							player.sendMessage(prefix + "/pvps [dmon|dmoff] - Turns death messages on/off for the server.");
-						}
-					}
-
 					if (split[0].equals("on")) {
 						if (noServer.contains(player.getName())) { player.sendMessage(prefix + "Your toggleable PVP status has been revoked by the server"); } else {
 							if (noPvp.contains(player.getName())) {
@@ -419,7 +411,7 @@ public class SafePVPListener1 extends PlayerListener {
 											if (valid) {
 												player.sendMessage(spar + "You have accepted " + starter.getName() + "'s spar!");
 												starter.sendMessage(spar + player.getName() + " has accepted your spar!");
-												//					etc.getServer().messageAll(spar + "A spar has been started between " + starter.getName() + " and " + player.getName() + "!");
+												messageAll(spar + "A spar has been started between " + starter.getName() + " and " + player.getName() + "!");
 												accepted = true;
 												//					if (player.canUseCommand("/" + teleportLocation)) {
 												//						player.command("/" + teleportLocation);
