@@ -12,10 +12,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SafePVP extends JavaPlugin {
 	private final SafePVPListener1 playerListener = new SafePVPListener1(this);
-	private final SafePVPListener1 entityListener = new SafePVPListener1(this);
+	private final SafePVPEntityListener entityListener = new SafePVPEntityListener(this);
 	
 	String pluginName = "SafePVP";
-	String version = "1.7";
+	String version = "1.8";
 
 	public SafePVP(PluginLoader pluginLoader, Server instance,
 			PluginDescriptionFile desc, File folder, File plugin,
@@ -40,8 +40,7 @@ public class SafePVP extends JavaPlugin {
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND, playerListener, Priority.Normal, this);   
-		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.High, this);
 		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGEDBY_ENTITY, entityListener, Priority.High, this);
-		
+		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGEDBY_PROJECTILE, entityListener, Priority.High, this);
 	}
 }
