@@ -1,15 +1,15 @@
 name: SafePVP
-version: 1.7
+version: 1.7.2
 main: com.random101.safepvp.SafePVP
 author: DylanG-Random101
 commands:
-pvp:
-description: The base command used by SafePVP
-usage: |
-Incorrect usage of command /<command>.
-/pvp [on|off|status|mon|moff]
-or type /<command> help for more info
-pvpa:
-description: The admin command used by SafePVP
-usage: |
-/pvpa [player] [on|off|status]
+  pvp:
+    description: The base command used by SafePVP
+    usage: |
+      Incorrect usage of command /<command>.
+      pvp [on|off|status|mon|moff]
+      or type /<command> help for more info
+  pvpa:
+    description: The admin command used by SafePVP
+    usage: |
+      pvpa [player] [on|off|status]
