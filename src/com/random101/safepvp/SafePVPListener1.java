@@ -4,64 +4,61 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.Properties;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerListener;
 
 public class SafePVPListener1 extends PlayerListener {
 	private final SafePVP plugin;
-	ArrayList<String> yesPvp = new ArrayList<String>();
-	ArrayList<String> noPvp = new ArrayList<String>();
-	ArrayList<String> noMsg = new ArrayList<String>();
-	ArrayList<String> yesMsg = new ArrayList<String>();
-	ArrayList<String> noServer = new ArrayList<String>();
-	ArrayList<String> sparList = new ArrayList<String>();
-	ArrayList<String> iSparList = new ArrayList<String>();
-	String prefix = ChatColor.GREEN + "[SafePVP] " + ChatColor.WHITE;
-	String prefixA = prefix + ChatColor.YELLOW + "[ADMIN] " + ChatColor.WHITE; 
-	String spar = prefix + ChatColor.GOLD + "[SPAR] " + ChatColor.WHITE;
-	String duel = prefix + ChatColor.GRAY + "[iSPAR] " + ChatColor.WHITE;
-	String prefixS = prefix + ChatColor.DARK_BLUE + "[SERVER] " + ChatColor.WHITE;
-	String teleportLocation; 
-	String xGroup;
-	String fallMessage;
-	String creeperMessage;
-	String tntMessage;
-	String waterMessage;
-	String iXGroup;
-	String iteleportLocation;
-	String currency;
-	boolean waiting;
-	boolean inGroup;
-	boolean on;
-	boolean defaultPvpOff;
-	boolean defaultMessageOff;
-	boolean defaultDMOff;
-	boolean inProgress;
-	boolean valid;
-	boolean accepted;
-	boolean finished;
-	boolean iWaiting;
-	boolean iOn;
-	boolean iInProgress;
-	boolean iValid;
-	boolean iAccepted;
-	boolean found;
-	boolean iFinished;
-	Player starter;
-	Player iStarter;
-	int iWin;
-	int defaultToggleDelay;
-	int defaultSparTime;
-	int defaultISparTime;
-	Properties prop = new Properties(); 
+	static ArrayList<String> yesPvp = new ArrayList<String>();
+	static ArrayList<String> noPvp = new ArrayList<String>();
+	static ArrayList<String> noMsg = new ArrayList<String>();
+	static ArrayList<String> yesMsg = new ArrayList<String>();
+	static ArrayList<String> noServer = new ArrayList<String>();
+	static ArrayList<String> sparList = new ArrayList<String>();
+	static ArrayList<String> iSparList = new ArrayList<String>();
+	static String prefix = ChatColor.GREEN + "[SafePVP] " + ChatColor.WHITE;
+	static String prefixA = prefix + ChatColor.YELLOW + "[ADMIN] " + ChatColor.WHITE; 
+	static String spar = prefix + ChatColor.GOLD + "[SPAR] " + ChatColor.WHITE;
+	static String duel = prefix + ChatColor.GRAY + "[iSPAR] " + ChatColor.WHITE;
+	static String prefixS = prefix + ChatColor.DARK_BLUE + "[SERVER] " + ChatColor.WHITE;
+	static String teleportLocation; 
+	static String xGroup;
+	static String fallMessage;
+	static String creeperMessage;
+	static String tntMessage;
+	static String waterMessage;
+	static String iXGroup;
+	static String iteleportLocation;
+	static String currency;
+	static boolean waiting;
+	static boolean inGroup;
+	static boolean on;
+	static boolean defaultPvpOff;
+	static boolean defaultMessageOff;
+	static boolean defaultDMOff;
+	static boolean inProgress;
+	static boolean valid;
+	static boolean accepted;
+	static boolean finished;
+	static boolean iWaiting;
+	static boolean iOn;
+	static boolean iInProgress;
+	static boolean iValid;
+	static boolean iAccepted;
+	static boolean found;
+	static boolean iFinished;
+	static Player starter;
+	static Player iStarter;
+	static int iWin;
+	static int defaultToggleDelay;
+	static int defaultSparTime;
+	static int defaultISparTime;
+	static Properties prop = new Properties(); 
 
 	{
 		try {
@@ -125,12 +122,14 @@ public class SafePVPListener1 extends PlayerListener {
 	public boolean canUseCommand(String b) {
 		return true;
 	}
+	
 	public void messageAll(String message) {
 		Player[] players = plugin.getServer().getOnlinePlayers();
 		for (Player p : players) {
 			p.sendMessage(message);
 		}
 	}
+	
 	public boolean arraySearch(Player[] list, Player target) {
 		for (Player p : list)
 			if (p.equals(target)) {
@@ -538,141 +537,4 @@ public class SafePVPListener1 extends PlayerListener {
 		}
 		return true;
 	}
-	/*
-	@Override
-	public void onPlayerCommand(PlayerChatEvent event) {
-		String[] split = event.getMessage().split(" ");
-		Player player = event.getPlayer();
-		if (split[0].equals("/pvp")) {
-		}
-		if (split[0].equals("/pvpa")) {
-		}
-	}
-	 */
-
-	public class EntityEvents extends EntityListener {
-		public void onEntityDamageByProjectile (EntityDamageByProjectileEvent event) {
-			Entity att = event.getDamager();
-			Entity def = event.getEntity();
-			if((att instanceof PlayerEvent) && (def instanceof PlayerEvent)) {
-				Player attacker = ((PlayerEvent) att).getPlayer();
-				Player defender = ((PlayerEvent) def).getPlayer();
-				if (noPvp.contains(defender.getName())) { 
-					if (yesMsg.contains(defender.getName()))
-						defender.sendMessage(prefix + attacker.getName() + "'s arrows are useless on you.");
-					event.setCancelled(true);
-				}
-				if (noPvp.contains(attacker.getName())) {
-					if (yesMsg.contains(attacker.getName()))
-						attacker.sendMessage(prefix + defender.getName() + " is on the no PVP list!");
-					event.setCancelled(true);
-				}
-				if (yesPvp.contains(attacker.getName()) && yesPvp.contains(defender.getName())) {
-				}
-			}
-		}
-
-		public void onEntityDamagedByEntity(EntityDamageByEntityEvent event) {
-			Entity att = event.getDamager();
-			Entity def = event.getEntity();
-			if((att instanceof PlayerEvent) && (def instanceof PlayerEvent)) {
-				Player attacker = ((PlayerEvent) att).getPlayer();
-				Player defender = ((PlayerEvent) def).getPlayer();
-				int amount = event.getDamage();
-				if (accepted) {
-					if (finished) { event.setCancelled(true); } else {
-						if (sparList.contains(attacker.getName().toLowerCase()) && sparList.contains(defender.getName().toLowerCase())) {
-							if (defender.getHealth()-amount <= 0) {
-								messageAll(spar + attacker.getName() + " has won the spar between " + defender.getName() + "! Congratulations!");
-								finished = true;
-								inProgress = false;
-								accepted = false;
-								valid = false;
-								waiting = false;
-								sparList.remove(attacker.getName().toLowerCase());
-								sparList.remove(defender.getName().toLowerCase());
-							}					
-
-						}
-					}
-				}
-				if (iAccepted) {
-					if (iFinished) { event.setCancelled(true);  } else {
-						if (iSparList.contains(attacker.getName().toLowerCase()) && iSparList.contains(defender.getName().toLowerCase())) {
-							if (defender.getHealth()-amount <= 0) {
-								messageAll(duel + attacker.getName() + " has won the iSpar between " + defender.getName() + "!");
-								messageAll(duel + attacker.getName() + " has been credited " + iWin + " " + currency + "!");
-								//	int balance = Hooked.getInt("iBalance", new Object[] { "balance", attacker.getName() });
-								//	int newBalance = (balance+iWin);
-								//	Hooked.silent("iBalance", new Object[] { "set", attacker.getName(), newBalance }); 
-								iFinished = true;
-								iInProgress = false;
-								iAccepted = false;
-								iValid = false;
-								iWaiting = false;
-								iSparList.remove(attacker.getName().toLowerCase());
-								iSparList.remove(defender.getName().toLowerCase());
-							}					
-
-						}
-					}
-				}
-				if (sparList.contains(defender.getName().toLowerCase()) && accepted) {
-					attacker.sendMessage(spar + ChatColor.DARK_AQUA + defender.getName() + ChatColor.WHITE + " is participating in a spar and you aren't their partner.");			
-
-				}
-				if (sparList.contains(attacker.getName().toLowerCase()) && accepted) {
-					attacker.sendMessage(spar + "You are sparring and " + ChatColor.DARK_AQUA + defender.getName() + ChatColor.WHITE +  " isn't your partner.");			
-
-				}
-				if (iSparList.contains(defender.getName().toLowerCase()) && iAccepted) {
-					attacker.sendMessage(duel + ChatColor.DARK_AQUA + defender.getName() + ChatColor.WHITE + " is participating in an iSpar and you aren't their partner.");			
-
-				}
-				if (iSparList.contains(attacker.getName().toLowerCase()) && iAccepted) {
-					attacker.sendMessage(duel + "You are iSparring and " + ChatColor.DARK_AQUA + defender.getName() + ChatColor.WHITE + " isn't your partner.");			
-
-				}
-				if (noPvp.contains(defender.getName())) {
-					if (yesMsg.contains(defender.getName())) {
-						defender.sendMessage(prefix + "The no PVP list protects you from " + ChatColor.DARK_AQUA + attacker.getName() + ChatColor.WHITE +  ".");
-					}
-					if (yesMsg.contains(attacker.getName())) {
-						attacker.sendMessage(prefix + ChatColor.DARK_AQUA + defender.getName() + ChatColor.WHITE + " is on the no PVP list. You can't damage them.");			
-					}
-
-				}
-				if (noPvp.contains(attacker.getName())) {
-					if (yesMsg.contains(defender.getName())) {
-						defender.sendMessage(prefix + ChatColor.DARK_AQUA + attacker.getName() + ChatColor.WHITE + " is on the no PVP list. You can't be damaged.");
-					}
-					if (yesMsg.contains(attacker.getName())) {
-						attacker.sendMessage(prefix + "You are on the no PVP list. You can not damage!");						
-					}
-
-				}
-				if (!noPvp.contains(attacker.getName()) && !yesPvp.contains(attacker.getName())) {
-					if (yesMsg.contains(attacker.getName())) {
-						attacker.sendMessage(prefix + "Type /pvp on to battle!");
-					}
-
-				}
-				if (!noPvp.contains(defender.getName()) && !yesPvp.contains(defender.getName())) {
-					if (yesMsg.contains(attacker.getName())) {
-						attacker.sendMessage(prefix + ChatColor.DARK_AQUA + defender.getName() + ChatColor.WHITE + " hasn't enabled PVP yet!");
-					}
-					if (yesMsg.contains(defender.getName())) {
-						defender.sendMessage(prefix + "Type /pvp on to battle or /pvp off to stay safe.");
-					}
-
-				}
-				if (yesPvp.contains(attacker.getName()) && (yesPvp.contains(defender.getName()))) {
-					if (defender.getHealth()-amount <= 0) {
-						messageAll(prefix + ChatColor.RED + attacker.getName() + " has just killed " + defender.getName() + ".");
-					}
-				}
-			}
-		}
-	}
-
 }
